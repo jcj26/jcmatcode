@@ -2,7 +2,7 @@ function colourAtla
 % @author slandarer
 
 % 颜色数量
-colorNum=2;% 初始颜色列表
+colorNum = 6;% 初始颜色列表
 colorList=[189  115  138; 237  173  158
            140  199  181; 120  205  205
             79  148  205; 205  150  205];
@@ -26,7 +26,7 @@ atlaFig=uifigure('units','pixels');
 atlaFig.Position=[10,65,820,660];
 atlaFig.NumberTitle='off';
 atlaFig.MenuBar='none';
-atlaFig.Name='colour atla 1.0 | by slandarer';
+atlaFig.Name='colour atla 2.0 | by jc';
 atlaFig.Color=[1,1,1];
 atlaFig.Resize='off';
 % 显示图像axes区域
@@ -252,7 +252,7 @@ end
 function onTableEdited(~,event)
     newData=colorTable.Data;
     newData=round(max(0,min(255,newData)));
-    colorList=uint8(newData);
+    colorList=double(newData);
     colorTable.Data=double(colorList);
     freshColorAtla();
 end
@@ -421,7 +421,7 @@ function colors=parseCOMSOL(fullpath)
         end
     end
     fclose(fid);
-    colors=uint8(colors);
+    colors=double(colors);
 end
 
 % 解析Origin .pal
@@ -438,7 +438,7 @@ function colors=parseOrigin(fullpath)
         end
     end
     fclose(fid);
-    colors=uint8(colors);
+    colors=double(colors);
 end
 
 % 解析Tecplot .map
@@ -458,7 +458,7 @@ function [colors,name]=parseTecplot(fullpath)
             colors(end+1,:)=vals(1:3)';
         end
     end
-    colors=uint8(colors);
+    colors=double(colors);
 end
 
 % 解析MATLAB .m函数
@@ -481,7 +481,7 @@ function [colors,name]=parseMatlabFunc(fullpath)
             colors(end+1,:)=round(vals(1:3)'*255);
         end
     end
-    colors=uint8(colors);
+    colors=double(colors);
 end
 
 % 解析MATLAB .mat
@@ -493,7 +493,7 @@ function [colors,name]=parseMatlabMat(fullpath)
     for i=1:numel(fields)
         val=vars.(fields{i});
         if isnumeric(val)&&ismatrix(val)&&size(val,2)==3
-            colors=uint8(round(max(0,min(1,val))*255));
+            colors=double(round(max(0,min(1,val))*255));
             name=fields{i};
             break;
         end
